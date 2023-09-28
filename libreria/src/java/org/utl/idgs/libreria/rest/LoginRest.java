@@ -16,7 +16,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.utl.idgs.libreria.controller.ControllerLogin;
-import org.utl.idgs.libreria.model.Empleado;
+import org.utl.idgs.libreria.model.Alumno;
 import org.utl.idgs.libreria.model.Usuario;
 
 /**
@@ -31,38 +31,16 @@ public class LoginRest extends Application{
     public Response acceder(@FormParam ("datosUsuario") @DefaultValue ("") String datosUsuario){
         Gson gson = new Gson();
         Usuario u = new Usuario();
-        Empleado e = new Empleado();
+        //Alumno a = new Alumno();
         u = gson.fromJson(datosUsuario, Usuario.class);
         ControllerLogin objCA = new ControllerLogin();
         try {
-            e = objCA.entrar(u);
+            u = objCA.entrarUsuario(u);
         } catch (Exception ex) {
             Logger.getLogger(LoginRest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String out = gson.toJson(e);
+        String out = gson.toJson(u);
         return Response.status(Response.Status.OK).entity(out).build();
     }
     
-    @Path("in")
-    @Produces(MediaType.APPLICATION_JSON)
-    @POST
-    public Response logIn(@FormParam("datosAcceso") @DefaultValue("") String datosAcceso){
-        Gson gson = new Gson();
-        Usuario usuario = new Usuario();
-        Empleado e = new Empleado();
-        usuario = gson.fromJson(datosAcceso, Usuario.class);
-        System.out.println(usuario.toString());
-        ControllerLogin objCA = new ControllerLogin();
-        try {
-            e = objCA.entrar(usuario);
-            e.getUsuario().setLastToken();
-            objCA.guardarToken(e);
-            
-        } catch (Exception ex) {
-            Logger.getLogger(LoginRest.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }
-        String out = gson.toJson(e);
-        return Response.status(Response.Status.OK).entity(out).build();
-    }
 }

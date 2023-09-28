@@ -14,10 +14,10 @@ function login() {
 
     encriptar(contrasenia).then((textoEncriptado) => {
     alert(textoEncriptado.toString());
-    let usuario = {"datosUsuario": JSON.stringify({"usuario": user, "contrasenia": textoEncriptado})};
+    let usuario = {"datosUsuario": JSON.stringify({"correo": user, "contrasenia": textoEncriptado})};
 
     const url = new URLSearchParams(usuario);
-    fetch('http://localhost:8081/libreria/api/restlibreria/login',
+    fetch('api/restlibreria/login',
             {
                 method: "POST",
                 headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
@@ -27,12 +27,12 @@ function login() {
             .then(data => {
                 if (data.error) {
                     alert(data.error);
-                } else if (data.idEmpleado) {
+                } else if (data.rol === 'Alumno') {
                     //localStorage.setItem('currentUser', JSON.stringify(data));
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'Acceso Concedido' + data.persona.nombre,
+                        title: 'Acceso Concedido ' + data.nombre,
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -40,8 +40,11 @@ function login() {
                         console.log("2 segundos esperado");
                     }, 2000);
 
-                    //window.location.href = "http://localhost:8081/libreria/principal.html";
+                    window.location.href = "principal.html";
+                    
 
+                } else if(data.rol === 'Administrador'){
+                    window.location.href = "administrador.html";
                 } else {
                     Swal.fire({
                         position: 'center',

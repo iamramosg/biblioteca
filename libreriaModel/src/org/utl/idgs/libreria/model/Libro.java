@@ -11,7 +11,7 @@ package org.utl.idgs.libreria.model;
 public class Libro {
     private int idLibro;
     private String titulo;
-    private byte[] archivo;
+    private String archivo;
     private String autor;
     private String idioma;
     private String genero;
@@ -20,7 +20,7 @@ public class Libro {
     public Libro() {
     }
 
-    public Libro(String titulo, byte[] archivo, String autor, String idioma, String genero, int estatus) {
+    public Libro(String titulo, String archivo, String autor, String idioma, String genero, int estatus) {
         this.titulo = titulo;
         this.archivo = archivo;
         this.autor = autor;
@@ -29,7 +29,7 @@ public class Libro {
         this.estatus = estatus;
     }
 
-    public Libro(int idLibro, String titulo, byte[] archivo, String autor, String idioma, String genero, int estatus) {
+    public Libro(int idLibro, String titulo, String archivo, String autor, String idioma, String genero, int estatus) {
         this.idLibro = idLibro;
         this.titulo = titulo;
         this.archivo = archivo;
@@ -55,11 +55,11 @@ public class Libro {
         this.titulo = titulo;
     }
 
-    public byte[] getArchivo() {
+    public String getArchivo() {
         return archivo;
     }
 
-    public void setArchivo(byte[] archivo) {
+    public void setArchivo(String archivo) {
         this.archivo = archivo;
     }
 
@@ -99,6 +99,8 @@ public class Libro {
     public String toString() {
         return "Libro{" + "idLibro=" + idLibro + ", titulo=" + titulo + ", archivo=" + archivo + ", autor=" + autor + ", idioma=" + idioma + ", genero=" + genero + ", estatus=" + estatus + '}';
     }
+    
+    
     
     
 }

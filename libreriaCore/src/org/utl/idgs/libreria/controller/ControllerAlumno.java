@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.utl.idgs.libreria.db.ConexionMySQL;
 import org.utl.idgs.libreria.model.Alumno;
+import org.utl.idgs.libreria.model.Universidad;
+import org.utl.idgs.libreria.model.Usuario;
 /**
  *
  * @author iamra
@@ -91,6 +93,49 @@ public class ControllerAlumno {
         cstmt.close();
         conn.close();
         conexion.close();
-    }     
+    }  
+    public List<Alumno> getAll(String filtro) throws SQLException{
+        String query = "SELECT * FROM vista_a WHERE estatus="+filtro+";";
+        
+        ConexionMySQL objConexion = new ConexionMySQL();
+        // Abro la conexion
+        Connection conn = objConexion.open();
+        // Preparo el envio
+        PreparedStatement pstmt = conn.prepareStatement(query);
+        //Declaramos la lista
+        List<Alumno> alumnos = new ArrayList<>();
+        // nos devuelve la informacion
+        ResultSet rs = pstmt.executeQuery();  
+        while(rs.next()){
+            Usuario u = new Usuario();
+            Universidad un = new Universidad();
+            Alumno a = new Alumno();
+            u.setIdUsuario(rs.getInt("idUsuario"));
+            u.setNombre(rs.getString("nombre"));
+            u.setApellidoP(rs.getString("apellidoP"));
+            u.setApellidoM(rs.getString("apellidoM"));
+            u.setGenero(rs.getString("genero"));
+            u.setCorreo(rs.getString("correo"));
+            u.setContrasenia(rs.getString("contrasenia"));
+            u.setRol(rs.getString("rol"));
+            u.setEstatus(rs.getInt("estatus"));
+            a.setUsuario(u);
+            
+            un.setIdUniversidad(rs.getInt("idUniversidad"));
+            un.setNombre(rs.getString("nombreU"));
+            un.setPais(rs.getString("pais"));
+            un.setEstatus(rs.getInt("estatusU"));
+            a.setUniversidad(un);
+            
+            a.setIdAlumno(rs.getInt("idAlumno"));
+            a.setMatricula(rs.getString("matricula"));
+            alumnos.add(a);
+ 
+        }
+        rs.close();
+        pstmt.close();
+        conn.close();
+        return alumnos;        
+    }
     
 }
